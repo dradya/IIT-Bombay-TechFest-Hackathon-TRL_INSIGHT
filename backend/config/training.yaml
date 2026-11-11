@@ -1,0 +1,59 @@
+# =====================================================================
+# Training configuration
+# ---------------------------------------------------------------------
+# Used by training/train_model.py. Hyper-parameters are deliberately
+# conservative so the baseline trains quickly on CPU without a GPU.
+# =====================================================================
+
+version: 1
+
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+  seed: 42
+
+tfidf:
+  max_features: 15000
+  ngram_range: [1, 2]
+  min_df: 2
+  max_df: 0.95
+  sublinear_tf: true
+  strip_accents: unicode
+  lowercase: true
+
+models:
+  # Candidate set. "auto" trains each available candidate that satisfies
+  # the minimum data size and keeps the one with the best validation
+  # macro-F1.
+  candidates: [lr, xgb]
+  min_samples_for_boosting: 150
+
+logistic_regression:
+  C: 1.0
+  max_iter: 2000
+  class_weight: balanced
+  solver: lbfgs
+  n_jobs: -1
+
+xgboost:
+  n_estimators: 220
+  max_depth: 5
+  learning_rate: 0.10
+  subsample: 0.9
+  colsample_bytree: 0.9
+  objective: multi:softprob
+  eval_metric: mlogloss
+  tree_method: hist
+  n_jobs: -1
+
+lightgbm:
+  n_estimators: 220
+  max_depth: -1
+  num_leaves: 31
+  learning_rate: 0.10
+  objective: multiclass
+  verbosity: -1
+
+selection:
+  metric: macro_f1          # used to pick the final model on the val split

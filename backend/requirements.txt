@@ -1,0 +1,3 @@
+# Backend-specific requirements (delegates to the project root file so
+# there is a single source of truth).
+-r ../requirements.txt

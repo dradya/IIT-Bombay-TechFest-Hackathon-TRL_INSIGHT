@@ -1,0 +1,40 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# --- Node ---
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# --- Local data / artefacts (never commit user data) ---
+backend/data/uploads/
+backend/data/extracted/
+backend/data/processed/
+backend/data/trl_insight.db*
+backend/data/trl_insight.db-shm
+backend/data/trl_insight.db-wal
+*.log
+
+# Keep the synthetic demo dataset & trained demo model out of VCS noise
+# (they are regenerated with the training scripts; the ZIP ships them)
+# backend/data/raw/
+# backend/models/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Reports generated locally ---
+*_report.pdf
+backend/_smoke_report.pdf

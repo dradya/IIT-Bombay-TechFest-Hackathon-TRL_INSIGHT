@@ -1,0 +1,865 @@
+# =====================================================================
+# TRL INSIGHT - Configurable Technology Readiness Level Framework
+# ---------------------------------------------------------------------
+# Contains: TRL definitions, required milestones, evidence indicators,
+# progression criteria, assessment rules and recommendation templates.
+#
+# This file is data, not code: it can be edited to adapt the assessment
+# rules to a different domain or to a revised official specification
+# without touching the Python sources.
+# =====================================================================
+
+version: "1.0.0"
+meta:
+  name: "TRL INSIGHT Technology Readiness Framework"
+  description: >-
+    Configurable TRL 1-9 reference framework with milestones, evidence
+    indicators, progression criteria, assessment rules and recommendation
+    templates.
+  scale_note: >-
+    General TRL definitions aligned with commonly used 9-point readiness
+    scales (NASA / DoD / ISO 16291 style). This is a configurable local
+    framework and is NOT an official competition specification.
+
+# The four evidence states required by the assessment specification.
+evidence_statuses:
+  - confirmed
+  - not_found
+  - contradicted
+  - unclear
+
+# ---------------------------------------------------------------------
+# EVIDENCE CATEGORIES
+# Each category maps to the milestone(s) it can support. An evidence item
+# only CONFIRMS a milestone when the milestone's own defining indicators
+# are matched in a completed (non-future, non-negated) statement.
+# ---------------------------------------------------------------------
+evidence_categories:
+  - id: scientific_principles
+    label: "Scientific principles"
+    description: "Underlying scientific or physical principles observed or explained."
+    primary_milestone: m1
+    secondary_milestones: []
+    keywords:
+      - first principles
+      - fundamental principle
+      - physical principle
+      - scientific basis
+      - theoretical analysis
+      - theoretical framework
+      - governing equation
+      - thermodynamic
+      - electromagnetic
+      - quantum
+      - kinetic theory
+      - observed phenomenon
+      - principle of operation
+      - underlying mechanism
+    section_hints: [introduction, background, theory, principles, fundamentals]
+
+  - id: research_hypotheses
+    label: "Research hypotheses"
+    description: "Stated hypotheses, research questions or feasibility propositions."
+    primary_milestone: m2
+    secondary_milestones: []
+    keywords:
+      - hypothesis
+      - research question
+      - we postulate
+      - it is assumed
+      - feasibility study
+      - feasibility of
+      - expected to
+      - we conjecture
+      - premise
+      - assumed that
+      - research objective
+    section_hints: [hypothesis, objectives, introduction, motivation]
+
+  - id: technology_concepts
+    label: "Technology concepts"
+    description: "Formulated technology concept, design or proposed application."
+    primary_milestone: m2
+    secondary_milestones: []
+    keywords:
+      - technology concept
+      - design concept
+      - concept of operation
+      - proposed approach
+      - proposed method
+      - proposed system
+      - novel design
+      - architecture
+      - application area
+      - intended application
+      - use case
+      - technical concept
+      - invention
+      - patent
+    section_hints: [concept, design, proposal, introduction, summary]
+
+  - id: experimental_proof
+    label: "Experimental proof"
+    description: "Laboratory or analytical proof of the core concept (proof of concept)."
+    primary_milestone: m3
+    secondary_milestones: []
+    keywords:
+      - proof of concept
+      - proof-of-concept
+      - poc experiment
+      - experimental verification
+      - experimentally verified
+      - feasibility demonstrated
+      - initial validation
+      - demonstrator
+      - principle verified
+      - bench demonstration
+      - first experimental
+    section_hints: [results, experiment, validation, demonstration, findings]
+
+  - id: laboratory_testing
+    label: "Laboratory testing"
+    description: "Testing performed under controlled laboratory conditions."
+    primary_milestone: m4
+    secondary_milestones: []
+    keywords:
+      - laboratory test
+      - laboratory experiment
+      - lab-scale
+      - lab scale
+      - bench-top
+      - benchtop
+      - in the laboratory
+      - controlled laboratory
+      - test bench
+      - experimental setup
+      - characterization was
+      - measured performance
+      - chamber test
+      - controlled conditions
+    section_hints: [methods, experimental setup, laboratory, tests, characterization]
+
+  - id: prototype_development
+    label: "Prototype development"
+    description: "Design, fabrication or assembly of an integrated prototype."
+    primary_milestone: m5
+    secondary_milestones: [m6]
+    keywords:
+      - prototype
+      - demonstrator unit
+      - integrated prototype
+      - fabricated
+      - assembled
+      - hardware implementation
+      - working unit
+      - test article
+      - alpha version
+      - functional prototype
+      - engineering model
+    section_hints: [fabrication, implementation, prototype, design, assembly]
+
+  - id: relevant_environment_testing
+    label: "Relevant-environment testing"
+    description: "Validation or demonstration in a representative / relevant environment."
+    primary_milestone: m5
+    secondary_milestones: [m6]
+    keywords:
+      - relevant environment
+      - representative environment
+      - simulated environment
+      - field-representative
+      - realistic conditions
+      - pilot-scale
+      - pilot plant
+      - semi-field
+      - operational-like
+      - environmental chamber
+      - simulated conditions
+      - application-relevant
+    section_hints: [field test, relevant environment, pilot, validation, testing]
+
+  - id: operational_demonstration
+    label: "Operational demonstration"
+    description: "Demonstration of a system prototype in the operational environment."
+    primary_milestone: m7
+    secondary_milestones: []
+    keywords:
+      - operational environment
+      - field trial
+      - field test
+      - on-site demonstration
+      - in-service trial
+      - operational trial
+      - end user
+      - customer site
+      - live trial
+      - operational scenario
+      - deployed for trial
+      - site demonstration
+    section_hints: [field trial, deployment trial, operational, site, trial]
+
+  - id: system_qualification
+    label: "System qualification"
+    description: "Qualification, certification, acceptance and reliability testing of the complete system."
+    primary_milestone: m8
+    secondary_milestones: []
+    keywords:
+      - qualification test
+      - qualification testing
+      - qualified
+      - certification
+      - certified
+      - acceptance test
+      - type approval
+      - reliability test
+      - lifecycle test
+      - standards compliance
+      - production ready
+      - series production
+      - final verification
+    section_hints: [qualification, certification, acceptance, reliability, verification]
+
+  - id: actual_deployment
+    label: "Actual deployment"
+    description: "The system proven in real operational/commercial service."
+    primary_milestone: m9
+    secondary_milestones: []
+    keywords:
+      - commercial deployment
+      - deployed in
+      - in commercial operation
+      - operational since
+      - routine operation
+      - in service since
+      - fielded
+      - installed at
+      - customer deployment
+      - mission proven
+      - operating since
+      - full-scale deployment
+    section_hints: [deployment, operation, service, commercial, results]
+
+# ---------------------------------------------------------------------
+# MILESTONES (the evidence chain, TRL 1 -> 9)
+# completion_required: the milestone is only CONFIRMED by evidence that
+# describes an activity that was actually performed and reported, not by
+# proposals, plans or future work.
+# ---------------------------------------------------------------------
+milestones:
+  - id: m1
+    trl: 1
+    label: "Basic principles observed"
+    description: "Scientific principles behind the technology are observed and reported."
+    completion_required: false
+    defining_indicators:
+      - first principles
+      - fundamental principle
+      - physical principle
+      - scientific basis
+      - theoretical analysis
+      - principle of operation
+      - observed phenomenon
+      - underlying mechanism
+      - governing equation
+
+  - id: m2
+    trl: 2
+    label: "Technology concept formulated"
+    description: "Technology concept and/or application formulated; hypotheses stated."
+    completion_required: false
+    defining_indicators:
+      - technology concept
+      - design concept
+      - concept of operation
+      - proposed approach
+      - proposed method
+      - feasibility study
+      - application concept
+      - intended application
+      - research hypothesis
+      - we propose
+      - invention disclosed
+      - patent application
+      - technical concept
+
+  - id: m3
+    trl: 3
+    label: "Experimental proof of concept"
+    description: "Analytical and/or experimental proof of concept performed."
+    completion_required: true
+    defining_indicators:
+      - proof of concept
+      - proof-of-concept
+      - experimental verification
+      - experimentally verified
+      - feasibility demonstrated
+      - initial validation
+      - first experimental
+      - demonstrator
+      - principle was verified
+      - analytical proof
+
+  - id: m4
+    trl: 4
+    label: "Technology validated in laboratory"
+    description: "Component and/or breadboard validation in a laboratory environment."
+    completion_required: true
+    defining_indicators:
+      - laboratory validation
+      - laboratory test
+      - laboratory experiment
+      - lab-scale test
+      - validated in the laboratory
+      - tested in the laboratory
+      - bench-top test
+      - test bench
+      - controlled laboratory
+      - component validation
+      - breadboard
+
+  - id: m5
+    trl: 5
+    label: "Technology validated in relevant environment"
+    description: "Component/breadboard validation in a relevant (representative) environment."
+    completion_required: true
+    defining_indicators:
+      - relevant environment
+      - representative environment
+      - simulated environment
+      - validated in a pilot
+      - pilot-scale test
+      - field-representative
+      - representative conditions
+      - simulated conditions
+      - application-relevant environment
+      - relevant conditions
+      - environmental test
+
+  - id: m6
+    trl: 6
+    label: "Technology demonstrated in relevant environment"
+    description: "System/subsystem model or prototype demonstrated in a relevant environment."
+    completion_required: true
+    defining_indicators:
+      - demonstrated in a relevant environment
+      - demonstrated in the relevant environment
+      - prototype demonstration
+      - system demonstration
+      - integrated prototype test
+      - full prototype test
+      - representative field
+      - subsystem demonstration
+      - model or prototype demonstration
+      - semi-field demonstration
+
+  - id: m7
+    trl: 7
+    label: "System prototype demonstrated in operational environment"
+    description: "System prototype demonstrated in an operational environment."
+    completion_required: true
+    defining_indicators:
+      - operational environment
+      - field trial
+      - field test
+      - on-site demonstration
+      - in-service trial
+      - operational trial
+      - operational demonstration
+      - demonstrated at the customer site
+      - end-to-end field demonstration
+      - live trial
+
+  - id: m8
+    trl: 8
+    label: "System complete and qualified"
+    description: "Actual system complete and qualified through test and demonstration."
+    completion_required: true
+    defining_indicators:
+      - qualification test
+      - qualification testing
+      - system was qualified
+      - certified system
+      - certification test
+      - acceptance test
+      - type approval
+      - reliability qualification
+      - production ready
+      - qualified system
+      - final system test
+
+  - id: m9
+    trl: 9
+    label: "Actual system proven in operational environment"
+    description: "Actual system proven through successful mission/operational service."
+    completion_required: true
+    defining_indicators:
+      - commercial deployment
+      - deployed in commercial
+      - in commercial operation
+      - operational since
+      - in service since
+      - routine operation
+      - proven in operation
+      - mission proven
+      - operating since
+      - fielded system
+      - successful operation
+
+# ---------------------------------------------------------------------
+# LEVELS: definitions, examples, requirements, progression criteria
+# ---------------------------------------------------------------------
+levels:
+  - level: 1
+    name: "Basic principles observed"
+    category: "Basic Research"
+    description: >-
+      Scientific principles are observed and reported. Research begins with
+      basic principles observed and reported in a peer-reviewed publication.
+    examples:
+      - "Peer-reviewed paper reporting an observed physical effect."
+      - "Theoretical analysis of a new material property."
+      - "Fundamental study of a mechanism with no application yet."
+    requirements:
+      - "Documented scientific principles or observed phenomena."
+      - "Peer-reviewed or internal technical publication."
+    progression_criteria:
+      - "Principles are reproducible and explained in writing."
+      - "A research question or hypothesis is defined."
+
+  - level: 2
+    name: "Technology concept formulated"
+    category: "Applied Research"
+    description: >-
+      The technology concept and/or application is formulated. Practical
+      application is identified but analytical and experimental work is
+      still speculative.
+    examples:
+      - "Invention disclosure or patent application."
+      - "Defined application concept and design architecture."
+      - "Feasibility study with stated hypotheses."
+    requirements:
+      - "Explicit technology concept or design description."
+      - "Identified target application and expected benefit."
+    progression_criteria:
+      - "Concept is specific enough to be tested experimentally."
+      - "Key assumptions and hypotheses are written down."
+
+  - level: 3
+    name: "Experimental proof of concept"
+    category: "Applied Research"
+    description: >-
+      Analytical and/or experimental proof of concept. Active research and
+      development is initiated; analytical studies and laboratory studies
+      validate that the concept is viable.
+    examples:
+      - "Bench-top proof-of-concept experiment with measured results."
+      - "Simulation validated against a known reference case."
+    requirements:
+      - "An experiment or analytical validation actually performed."
+      - "Reported results (measurements, plots, comparison)."
+    progression_criteria:
+      - "Core claim is supported by performed experiments."
+      - "Critical parameters and failure modes identified."
+
+  - level: 4
+    name: "Technology validated in laboratory"
+    category: "Technology Development"
+    description: >-
+      Basic technological components are integrated to establish that the
+      components work together. Validation is performed in a laboratory
+      environment.
+    examples:
+      - "Integrated component testing on a laboratory test bench."
+      - "Prototype subsystem characterized under controlled conditions."
+    requirements:
+      - "Integrated components tested together (not only isolated parts)."
+      - "Controlled laboratory conditions documented."
+      - "Quantified performance results reported."
+    progression_criteria:
+      - "Interfaces between components verified."
+      - "Laboratory data supports the design requirements."
+
+  - level: 5
+    name: "Technology validated in relevant environment"
+    category: "Technology Development"
+    description: >-
+      The basic technology components are integrated with reasonably
+      realistic supporting elements so that the technology can be tested
+      in a simulated or relevant environment.
+    examples:
+      - "Pilot-scale system tested under representative conditions."
+      - "Environmental chamber testing against field-like conditions."
+    requirements:
+      - "Testing outside the pure laboratory setting."
+      - "Relevant/representative environment defined and documented."
+      - "Results showing performance under those conditions."
+    progression_criteria:
+      - "Environmental and interface requirements verified."
+      - "Risk areas under realistic conditions identified."
+
+  - level: 6
+    name: "Technology demonstrated in relevant environment"
+    category: "Technology Development"
+    description: >-
+      A representative model or prototype system is demonstrated in a
+      relevant environment. Major problems are addressed and corrected.
+    examples:
+      - "Full prototype demonstrated at a representative test site."
+      - "Integrated system trial under field-representative conditions."
+    requirements:
+      - "Integrated prototype (not only components) demonstrated."
+      - "Representative environment close to the operational one."
+      - "Demonstration results and issues documented."
+    progression_criteria:
+      - "System-level performance verified."
+      - "Design freeze for operational prototype."
+
+  - level: 7
+    name: "System prototype demonstrated in operational environment"
+    category: "System Development"
+    description: >-
+      The system prototype is demonstrated in an operational environment,
+      typically at the intended customer or user site.
+    examples:
+      - "Field trial with the end user at the operating site."
+      - "On-site demonstration of the complete system."
+    requirements:
+      - "Complete system prototype in a true operational setting."
+      - "Operational stakeholders involved."
+      - "Trial protocol and measured outcomes recorded."
+    progression_criteria:
+      - "Operational requirements validated with real users."
+      - "Reliability and usability issues resolved."
+
+  - level: 8
+    name: "System complete and qualified"
+    category: "System Development"
+    description: >-
+      The technology is proven to work in its final form and under
+      operational conditions. The complete system is qualified through
+      testing and certification.
+    examples:
+      - "Qualification/certification testing completed."
+      - "Acceptance tests passed; production-ready system."
+    requirements:
+      - "Final-form system (no research modifications)."
+      - "Qualification or acceptance test reports."
+      - "Compliance with applicable standards documented."
+    progression_criteria:
+      - "All qualification criteria met and signed off."
+      - "Manufacturing/deployment plan in place."
+
+  - level: 9
+    name: "Actual system proven in operational environment"
+    category: "Operations"
+    description: >-
+      The actual system is proven through successful mission or operational
+      service. The technology is in routine use.
+    examples:
+      - "System in commercial or mission service for a sustained period."
+      - "Operational performance confirmed by real users over time."
+    requirements:
+      - "Evidence of real-world operational use."
+      - "Sustained service record with performance data."
+      - "No critical failures attributable to the technology."
+    progression_criteria:
+      - "Operational history documented."
+      - "Continuous improvement / sustaining engineering active."
+
+# ---------------------------------------------------------------------
+# TEXT PROCESSING SETTINGS
+# ---------------------------------------------------------------------
+text_processing:
+  min_sentence_chars: 25
+  max_sentence_chars: 1200
+  noise_patterns:
+    - 'https?://\S+'
+    - '\S+@\S+\.\S+'
+    - '^\s*references\s*$'
+    - '^\s*bibliography\s*$'
+  section_heading_patterns:
+    - '^\s*(?:\d+(?:\.\d+)*)?\s*([A-Z][A-Za-z \-/&]{2,60})\s*$'
+  section_aliases:
+    abstract: [abstract, summary]
+    introduction: [introduction, background, motivation, overview]
+    methods: [methods, methodology, experimental setup, materials and methods, approach, procedure]
+    results: [results, findings, experimental results, evaluation, observations]
+    discussion: [discussion, analysis, interpretation]
+    conclusion: [conclusion, conclusions, summary and discussion]
+    future_work: [future work, future studies, future research, next steps, outlook, future directions]
+    references: [references, bibliography]
+  future_section_names: [future_work]
+
+# ---------------------------------------------------------------------
+# EVIDENCE STATUS PATTERNS
+# The distinction that matters most:
+#   * a PROPOSED experiment  (future intent)  -> does NOT prove anything
+#   * an experiment PERFORMED (completed action)
+#   * an experiment with DOCUMENTED RESULTS  -> strongest confirmation
+# Patterns are matched against a lower-cased copy of the sentence.
+# ---------------------------------------------------------------------
+evidence_status_patterns:
+  # Statements that explicitly deny that something has happened.
+  contradicted:
+    - 'has not been (tested|validated|demonstrated|evaluated|deployed|developed|constructed|implemented|verified|proven|certified|qualified|performed|conducted|completed|executed)'
+    - 'have not been (tested|validated|demonstrated|evaluated|deployed|developed|constructed|implemented|verified|proven|certified|qualified|performed|conducted|completed|executed)'
+    - 'was not (tested|validated|demonstrated|evaluated|deployed|achieved|met|verified|proven|certified|qualified|performed|conducted|completed|executed)'
+    - 'were not (tested|validated|demonstrated|evaluated|deployed|achieved|met|verified|proven|certified|qualified|performed|conducted|completed|executed)'
+    - 'not yet been (tested|validated|demonstrated|evaluated|deployed|proven|certified|qualified)'
+    - 'is not yet (tested|validated|demonstrated|evaluated|deployed|certified|qualified)'
+    - 'are not yet (tested|validated|demonstrated|evaluated|deployed|certified|qualified)'
+    - 'not yet (been )?(certified|qualified)'
+    - 'has yet to be'
+    - 'have yet to be'
+    - 'yet to be (tested|validated|demonstrated|evaluated|deployed)'
+    - 'did not (demonstrate|show|achieve|validate|confirm|prove|meet|reach)'
+    - 'failed to (demonstrate|show|achieve|validate|confirm|prove|meet|reach)'
+    - 'could not be (demonstrated|validated|achieved|confirmed|replicated)'
+    - 'no (evidence|proof|prototype|deployment|field trial|validation) (of|for|was|has been)'
+    - 'no prototype was'
+    - 'no deployment'
+    - 'remains (unproven|untested|unvalidated|undemonstrated)'
+    - 'was unable to (demonstrate|validate|achieve)'
+    - 'without (any|sufficient) (validation|testing|evidence|verification)'
+    - 'has not (yet )?(been )?(reached|achieved)'
+
+  # Future intent / planned work: an activity that has NOT happened yet.
+  proposed:
+    - 'will be (tested|validated|demonstrated|evaluated|deployed|developed|constructed|implemented|verified|studied|investigated|performed|conducted)'
+    - 'will (conduct|perform|test|evaluate|demonstrate|deploy|validate|develop|build|fabricate|install)'
+    - 'plans to (test|validate|demonstrate|evaluate|deploy|develop|build|construct|implement)'
+    - 'plan to (test|validate|demonstrate|evaluate|deploy|develop|build|construct|implement)'
+    - 'aims to (test|validate|demonstrate|evaluate|deploy|develop|build|verify)'
+    - 'aim to (test|validate|demonstrate|evaluate|deploy|develop|build|verify)'
+    - 'intends to'
+    - 'intention is to'
+    - 'future (work|studies|research|investigation|directions|steps)'
+    - 'in future (work|studies|research)'
+    - 'to be (tested|validated|demonstrated|evaluated|deployed|developed|constructed|implemented|verified|explored|investigated)'
+    - 'under (development|construction|investigation|evaluation|testing|preparation)'
+    - 'being (developed|tested|evaluated|constructed|implemented)'
+    - 'currently (developing|testing|evaluating|constructing)'
+    - 'not yet (been )?(tested|validated|demonstrated|evaluated|deployed|developed|implemented)'
+    - 'we propose to'
+    - 'it is proposed to'
+    - 'are proposed to'
+    - 'is proposed to'
+    - 'proposed (experiment|study|trial|test|deployment|investigation|framework) (will|would|is planned)'
+    - 'next (phase|stage|step) (will|involves|includes)'
+    - 'shall be (tested|validated|demonstrated|evaluated|deployed)'
+    - 'is scheduled to'
+    - 'are scheduled to'
+    - 'is expected to be (tested|validated|demonstrated|deployed)'
+
+  # Completed actions - the activity actually happened.
+  completion:
+    - 'was (conducted|performed|carried out|completed|executed|run|achieved|demonstrated|validated|tested|measured|developed|designed|built|fabricated|assembled|installed|deployed|evaluated|verified|confirmed|recorded|observed)'
+    - 'were (conducted|performed|carried out|completed|executed|run|achieved|demonstrated|validated|tested|measured|developed|designed|built|fabricated|assembled|installed|deployed|evaluated|verified|confirmed|recorded|observed)'
+    - 'has been (conducted|performed|completed|achieved|demonstrated|validated|tested|measured|developed|built|fabricated|installed|deployed|evaluated|verified|confirmed|observed)'
+    - 'have been (conducted|performed|completed|achieved|demonstrated|validated|tested|measured|developed|built|fabricated|installed|deployed|evaluated|verified|confirmed|observed)'
+    - 'we (demonstrated|showed|validated|tested|measured|developed|designed|built|fabricated|assembled|installed|deployed|evaluated|verified|confirmed|observed|achieved|conducted|performed|obtained|recorded)'
+    - 'here we (demonstrate|show|present|report|validate|confirm)'
+    - 'the results (show|demonstrate|confirm|indicate|reveal|prove)'
+    - 'results (show|demonstrate|confirm|indicate|reveal|prove)'
+    - 'experimentally (verified|confirmed|demonstrated|observed|measured)'
+    - 'was shown to'
+    - 'were shown to'
+    - 'was found to'
+    - 'were found to'
+    - 'showed (a|an|that|the)'
+    - 'demonstrated (a|an|that|the|the ability)'
+    - 'we (propose|present|describe)'  # concept-level statements are completed reports
+
+  # Documented results - the strongest evidence class.
+  results:
+    - 'results (show|demonstrate|confirm|indicate|reveal|prove|suggest)'
+    - 'we (obtained|measured|recorded|achieved) (a|an|the)'
+    - 'measured (value|values|performance|results|data|response|output)'
+    - 'showed (a|an) (improvement|increase|decrease|reduction|error|accuracy)'
+    - 'agreed with (the|a|its)'
+    - 'was (within|below|above|equal to)'
+    - 'were (within|below|above|equal to)'
+    - 'with (an )?(accuracy|error|efficiency|yield|throughput|lifetime) of'
+    - 'data (show|indicate|confirm)'
+    - 'figure \d+ (shows|shows the)'
+    - 'table \d+ (shows|summarises|summarizes)'
+
+# ---------------------------------------------------------------------
+# ASSESSMENT RULES (hybrid ML + evidence + rules)
+# ---------------------------------------------------------------------
+assessment_rules:
+  # Weights of the hybrid prediction. ml_weight applies only when a trained
+  # model is available; otherwise the rule-based prior is used alone.
+  ml_weight: 0.55
+  rule_weight: 0.45
+  # Width (levels) of the rule prior when evidence coverage is good / poor.
+  rule_prior_tau_confirmed: 1.0
+  rule_prior_tau_uncertain: 1.7
+  evidence_coverage_good: 0.5
+  # Proposed (future) evidence NEVER confirms a milestone.
+  proposed_counts_as_evidence: false
+  # A milestone with both supporting and contradicting evidence is unclear.
+  conflicting_status: unclear
+  # Confidence handling
+  low_confidence_threshold: 0.45
+  min_evidence_coverage: 0.20
+  alternative_prob_threshold: 0.12
+  alternative_near_threshold: 0.08
+  alternative_max: 3
+  # Guardrail: predicted level may exceed the highest evidence-confirmed
+  # milestone by at most this many levels before it is flagged as an
+  # unsupported high-level claim (it is reported, never silently hidden).
+  max_levels_above_confirmed: 2
+  disagreement_penalty: 0.85
+  # Levels whose milestone is explicitly contradicted by the document are
+  # multiplied by this factor in the final probability distribution.
+  contradiction_penalty: 0.25
+  # Verification
+  contradiction_context_window: 1
+
+# ---------------------------------------------------------------------
+# RECOMMENDATION TEMPLATES
+# Every recommendation declares the milestone(s) it addresses, so the UI
+# can always show which missing milestone a recommendation targets.
+# ---------------------------------------------------------------------
+recommendation_templates:
+  - id: rec_principles
+    target_trl: 1
+    addresses: [m1]
+    title: "Document the underlying scientific principles"
+    actions:
+      - "Write a short technical note deriving the governing principles and assumptions of the technology."
+      - "Cite reproducible observations or theoretical derivations that support the principle of operation."
+    validation_experiments:
+      - "Reproduce the core physical effect in a controlled setting and record the raw data."
+    documentation:
+      - "Technical principles memo or peer-reviewed publication."
+
+  - id: rec_concept
+    target_trl: 2
+    addresses: [m2]
+    title: "Formalise the technology concept and application"
+    actions:
+      - "Define the technology concept, target application and intended operating principle in a design document."
+      - "State explicit hypotheses and the assumptions that must hold for the application to work."
+      - "Perform a first-order feasibility analysis (physics, cost, constraints)."
+    validation_experiments:
+      - "Analytical or simulation-based feasibility study against reference cases."
+    documentation:
+      - "Concept definition document / invention disclosure."
+
+  - id: rec_poc
+    target_trl: 3
+    addresses: [m3]
+    title: "Run and report an experimental proof of concept"
+    actions:
+      - "Design a minimal experiment that tests the core claim end-to-end."
+      - "Report measured results with comparison to the expected behaviour from the concept."
+      - "Distinguish clearly between planned experiments and experiments already performed."
+    validation_experiments:
+      - "Proof-of-concept bench experiment with quantitative measurements and error bars."
+    documentation:
+      - "Proof-of-concept report with raw data, setup photos and analysis."
+
+  - id: rec_lab
+    target_trl: 4
+    addresses: [m4]
+    title: "Integrate components and validate them in the laboratory"
+    actions:
+      - "Integrate the basic components into a breadboard/subsystem and test them together."
+      - "Define laboratory test procedures, acceptance criteria and instrumentation."
+      - "Quantify performance against the requirements derived from the concept."
+    validation_experiments:
+      - "Integrated laboratory test campaign on the breadboard under controlled conditions."
+    documentation:
+      - "Laboratory test plan and test report with measured results."
+
+  - id: rec_relevant_env
+    target_trl: 5
+    addresses: [m5]
+    title: "Validate the subsystem in a relevant environment"
+    actions:
+      - "Define the relevant environment (conditions, interfaces, loads) that represents the operational case."
+      - "Test the integrated subsystem under those representative conditions."
+      - "Record deviations from laboratory behaviour and their causes."
+    validation_experiments:
+      - "Pilot-scale or environmental-chamber test against field-representative conditions."
+    documentation:
+      - "Relevant-environment test protocol and results report."
+
+  - id: rec_prototype_demo
+    target_trl: 6
+    addresses: [m6]
+    title: "Demonstrate the integrated prototype in a relevant environment"
+    actions:
+      - "Freeze the prototype design and demonstrate the integrated system, not only components."
+      - "Run the demonstration in an environment representative of the intended use."
+      - "Log problems found and the corrective actions taken."
+    validation_experiments:
+      - "System-level demonstration trial with predefined success criteria."
+    documentation:
+      - "Prototype demonstration report including issues and fixes."
+
+  - id: rec_operational_demo
+    target_trl: 7
+    addresses: [m7]
+    title: "Demonstrate the system prototype in the operational environment"
+    actions:
+      - "Arrange a field trial at the intended operating site with real users/stakeholders."
+      - "Define the trial protocol, operational scenarios and success metrics in advance."
+      - "Capture operational feedback and any environment-specific failure modes."
+    validation_experiments:
+      - "On-site operational field trial / in-service trial."
+    documentation:
+      - "Field trial plan, trial report and user acceptance feedback."
+
+  - id: rec_qualification
+    target_trl: 8
+    addresses: [m8]
+    title: "Complete qualification and acceptance testing"
+    actions:
+      - "Execute the qualification test campaign against the applicable standards and internal requirements."
+      - "Close all corrective actions from the operational demonstration."
+      - "Confirm the final-form configuration is stable and production-ready."
+    validation_experiments:
+      - "Qualification, reliability and acceptance tests on the final system."
+    documentation:
+      - "Qualification test reports, certificates and configuration baseline."
+
+  - id: rec_deployment
+    target_trl: 9
+    addresses: [m9]
+    title: "Sustain operational service and document the service record"
+    actions:
+      - "Deploy the system in real operation and monitor performance over a sustained period."
+      - "Collect operational KPIs, incidents and user acceptance data."
+      - "Maintain a deployment log proving continuous successful operation."
+    validation_experiments:
+      - "Operational performance monitoring over the intended service life."
+    documentation:
+      - "Deployment records, service history and operational KPI reports."
+
+  - id: rec_sustain
+    target_trl: 9
+    addresses: [m9]
+    title: "Sustain and optimise the proven system"
+    actions:
+      - "Continue collecting operational evidence (uptime, incidents, KPIs)."
+      - "Investigate cost, reliability and lifecycle improvements."
+      - "Track requirement changes and maintain the qualification baseline."
+    validation_experiments:
+      - "Periodic reliability and performance audits of the deployed system."
+    documentation:
+      - "Updated operational performance and compliance reports."
+
+missing_milestone_actions:
+  # Fallback actions used when a missing milestone has no dedicated template.
+  m1: "Document the scientific principles and observed phenomena."
+  m2: "Formulate the technology concept and its target application."
+  m3: "Perform and report an experimental proof of concept."
+  m4: "Validate the integrated components in the laboratory."
+  m5: "Validate the subsystem in a relevant/representative environment."
+  m6: "Demonstrate the integrated prototype in a relevant environment."
+  m7: "Demonstrate the system prototype in the operational environment."
+  m8: "Complete qualification and acceptance testing of the final system."
+  m9: "Deploy the system and document sustained operational service."

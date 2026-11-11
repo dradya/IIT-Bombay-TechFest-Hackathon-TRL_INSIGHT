@@ -1,0 +1,34 @@
+# =====================================================================
+# TRL INSIGHT — docker compose
+#   Usage:  docker compose up --build
+#           open http://localhost:8000
+#
+# The image is multi-stage: the React SPA is built inside Docker and
+# served by FastAPI from frontend/dist (single-server mode), so only
+# one container/port is needed.
+# =====================================================================
+services:
+  trl-insight:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: trl-insight:latest
+    container_name: trl-insight
+    ports:
+      - "8000:8000"
+    environment:
+      TRL_ENV: production
+      TRL_LOG_LEVEL: INFO
+      TRL_HOST: 0.0.0.0
+      TRL_PORT: 8000
+      TRL_MAX_UPLOAD_SIZE_MB: "25"
+      # TRL_CORS_ORIGINS: "http://localhost:5173"   # only needed in dev-proxy mode
+    volumes:
+      # Persist history, uploads and (optionally) a retrained model
+      - trl-data:/app/backend/data
+      - trl-models:/app/backend/models
+    restart: unless-stopped
+
+volumes:
+  trl-data:
+  trl-models:

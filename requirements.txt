@@ -1,0 +1,40 @@
+# =====================================================================
+# TRL INSIGHT - Python dependencies (backend + training + tests)
+# Install:  pip install -r requirements.txt
+# =====================================================================
+
+# --- Web framework ---
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30
+pydantic>=2.7,<3.0
+python-multipart>=0.0.9
+
+# --- Data / ML ---
+numpy>=1.26
+pandas>=2.2
+scikit-learn>=1.5
+scipy>=1.11
+joblib>=1.4
+PyYAML>=6.0
+
+# --- Document processing ---
+PyMuPDF>=1.24            # PDF text extraction (page-accurate)
+pdfplumber>=0.11         # PDF table extraction (fallback)
+python-docx>=1.1         # DOCX extraction
+fpdf2>=2.7               # local PDF report generation (no external service)
+
+# --- Gradient boosting (optional but recommended; auto-skipped if absent) ---
+xgboost>=2.0
+lightgbm>=4.3
+
+# --- Testing ---
+pytest>=8.0
+httpx>=0.27
+
+# ---------------------------------------------------------------------
+# OPTIONAL extras (uncomment if needed - the app degrades gracefully):
+#   pytesseract>=0.3.10   # OCR for scanned PDFs (also requires the
+#   pillow>=10.0          #   Tesseract-OCR binary installed separately)
+#   sentence-transformers>=2.7  # semantic embeddings (downloads models;
+#                               # TF-IDF baseline works without it)
+# ---------------------------------------------------------------------

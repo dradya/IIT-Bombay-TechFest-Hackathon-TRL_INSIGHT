@@ -1,0 +1,38 @@
+{
+  "model_name": "LogisticRegression+TFIDF",
+  "model_version": "1.0.0",
+  "trained_at": "2026-11-07T10:53:57.954881+00:00",
+  "dataset_type": "synthetic_demo",
+  "dataset_source": "C:\\Users\\adyat\\Documents\\Default Project\\IIT-Bombay TechFest Hackathon\\backend\\data\\raw\\synthetic_demo_dataset.csv",
+  "framework_version": "1.0.0",
+  "feature_version": 1,
+  "n_train_final": 458,
+  "n_train": 377,
+  "n_val": 81,
+  "selection_metric": "macro_f1",
+  "selection_score": 1.0,
+  "candidates": [
+    {
+      "model": "lr",
+      "val_macro_f1": 1.0
+    },
+    {
+      "model": "xgb",
+      "val_macro_f1": 1.0
+    }
+  ],
+  "trained_on": "train+val",
+  "feature_count": 3465,
+  "labels": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "note": "SYNTHETIC demonstration dataset - functional testing only, not a competition benchmark."
+}

@@ -1,0 +1,43 @@
+# =====================================================================
+# Dataset adapter configuration
+# ---------------------------------------------------------------------
+# Maps an input dataset (CSV / TSV / JSON / JSONL) onto the internal
+# {id, text, trl} record shape. To integrate the OFFICIAL competition
+# dataset, change ONLY the column names / label patterns below - no
+# Python code has to be rewritten.
+#
+# Example for an official file with columns "document" and "trl_label":
+#     text_column: document
+#     label_column: trl_label
+# =====================================================================
+
+version: 1
+
+# --- column mapping ---------------------------------------------------
+text_column: text            # column containing the document text
+label_column: trl            # column containing the TRL label (1-9)
+id_column: id                # optional unique id column (generated if absent)
+domain_column: domain        # optional metadata columns (kept if present)
+organization_column: organization
+technology_column: technology_name
+
+# --- label parsing ----------------------------------------------------
+# Tried in order until one matches. The FIRST capture group must be 1-9.
+label_patterns:
+  - '^\s*(?:trl)?[\s_#-]*([1-9])\s*(?:/\s*9|of\s*9)?\s*$'
+  - '^\s*trl[\s_-]*([1-9])\b'
+  - '\b([1-9])\s*/\s*9\b'
+  - '\b([1-9])\b'
+allowed_labels: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# --- parsing options --------------------------------------------------
+encoding: utf-8
+encoding_fallbacks: [utf-8-sig, cp1252, latin-1]
+min_text_chars: 120          # rows shorter than this are dropped (reported)
+max_text_chars: 200000       # rows longer than this are truncated (reported)
+deduplicate: true            # drop exact duplicate texts (reported)
+drop_invalid_labels: true    # rows whose label cannot be parsed (reported)
+
+# --- optional filters -------------------------------------------------
+# Example: only keep rows with a non-empty "split" column value.
+filters: {}
